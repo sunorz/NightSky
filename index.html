@@ -22,44 +22,44 @@ html,body{
     height: 128px;
     background: url(images/moon.jpg) no-repeat;
     z-index: 999;
-    transform-origin:center center;
+    transform-origin:center;
 }
 .desc{
     color:#545454;
-   font-family: Consolas,Menlo,"courier new",monospace;
+    font-family: "-apple-system", BlinkMacSystemFont, "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Noto Sans Japanese", "ヒラギノ角ゴ Pro W3", "メイリオ", "Hiragino Kaku Gothic ProN", "MS PGothic", Osaka, "sans-serif";
    line-height: 1.5;
    width: 90%;
-   max-width: 800px;
+   max-width: 400px;
    margin: 50px auto;
+   text-align: center;
 }
 p{
      color:#545454;
      line-height: 1.5;
-     font-family: Consolas,Menlo,"courier new",monospace;
+     font-family: Consolas,Menlo,"courier new",monospace,STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
 }
 span:not(.default){
     width:10px;
     height: 10px;    
     background-size: cover;
-    animation: blink 1s infinite;
-    -webkit-animation: blink 1s infinite;
-    -moz-animation: blink 1s infinite;
-    -ms-animation: blink 1s infinite;
-    -o-animation: blink 1s infinite;
     position: absolute;
     filter: blur(1px);
 }
 .planet{
-    width:20px;
-    height: 20px;    
+    width:10px;
+    height: 10px;    
     background-size: cover;
     position: absolute;
     display: inline-block;
-    cursor: pointer;
     filter: blur(1px);
+    transform-origin: center;
+    transition-duration:2s;
+    cursor: pointer;
 }
 @keyframes blink {
-    0%{opacity: 0;}
+    0%{opacity: 1;}
+    98%{opacity: 1;}
+    99%{opacity:0;}
     100%{opacity: 1;}
 }
 .cover{
@@ -90,15 +90,19 @@ span:not(.default){
 </head>
 <body>
     <div class="cover"><div><span class="default"><img src="images/load.svg" alt><p>网页中天体的形状、位置、角度等和实际情况均无关联。</p><p>The shapes, positions, and angles of the celestial objects in this site are not relevant to the actual situation.</p></span></div></div>
-    <div class="warp"><div class="moon"></div><div class="desc">Good night.</div></div>
+    <div class="warp"><div class="moon"></div><div class="desc">今夜は月が綺麗ですね</div></div>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        const d = new Date(); 
+setTimeout(function(){
+$(".cover").fadeOut();
+},10000);
+const d = new Date(); 
 const len = d.getTime();
 const offset = d.getTimezoneOffset() * 60000;
 const utcTime = len + offset;
 const date = new Date(utcTime + 3600000 * 8);
 let hours = date.getHours();
+let starlog=0,redlog=0,yellowlog=0,planetlog='';
         if(hours<8){
             $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -63px');
         }
@@ -119,7 +123,6 @@ const moonRoll = randomNum(1,360);
 $(".moon").css('transform','rotate('+moonRoll+'deg)');
 const planet = randomNum(1,10);
 if(planet>0&&planet<8){
-    $(".desc").text('Find a planet!');
     var span = document.createElement('i');    
     document.body.appendChild(span);
     $("i").addClass("planet");
@@ -134,16 +137,30 @@ if(planet>0&&planet<8){
     span.style.backgroundImage = 'url(images/'+planet+'.jpg)';
     span.style.zIndex = "0";
     $(".planet").css('transform','rotate('+moonRoll+'deg)');
+    planetlog ='<br>The visible planet is ';
+    switch(planet){
+        case 1:planetlog+='<b>Mercury</b>.';break;
+        case 2:planetlog+='<b>Venus</b>.';break;
+        case 3:planetlog+='<b>Mars</b>.';break;
+        case 4:planetlog+='<b>Saturn</b>.';break;
+        case 5:planetlog+='<b>Neptune</b>.';break;
+        case 6:planetlog+='<b>Uranus</b>.';break;
+        case 7:planetlog+='<b>Jupiter</b>.';break;
+        default:break;
+    }
 }
 for(var i=0; i<60; i++){ 
-const starColorNum =  Math.random()*10;
-if(starColorNum<0.08){
+const starColorNum =  randomNum(1,100);
+if(starColorNum<2){
+    redlog++;
     item = '-red';
 }
-else if(starColorNum>0.08&&starColorNum<0.15){
+else if(starColorNum>1&&starColorNum<5){
+    yellowlog++;
     item = '-yellow';
 }
 else{
+    starlog++;
     item = '';
 }
     var span = document.createElement('span');    
@@ -159,12 +176,11 @@ else{
     span.style.zIndex = "0";
     var scale = Math.random() * 1.5;
     span.style.transform = 'scale('+ scale + ', ' + scale + ')';
-    var rate = Math.random() * 1.5;
-span.style.animationDelay = rate*100 + 's';
+    var rate = Math.random() * 15;
+    span.style.animationDelay = rate + 's';
+    var interval = Math.random()*150;
+    span.style.animation = 'blink '+interval+'s infinite';
 }
-setTimeout(function(){
-$(".cover").hide();
-},20000);
 function randomNum(minNum,maxNum){ 
     switch(arguments.length){ 
         case 1: 
@@ -178,9 +194,15 @@ function randomNum(minNum,maxNum){
             break; 
     } 
 } 
-$(".planet").hover(function(){
-    $(".desc").text('Got it!');
+$('.planet').hover(function(){
+    $(this).css('filter','blur(0px)');
+    $(this).css('transform','scale(5) rotate('+moonRoll+'deg)');
 });
+$('.planet').mouseleave(function(){
+     $(this).css('transform','scale(1) rotate('+moonRoll+'deg)');
+     $(this).css('filter','blur(1px)');
+});
+//$('.desc').html('<b>Normol Stars : </b>'+starlog+'<br><b>Yellow Stars : </b>'+yellowlog+'<br><b>Red Stars : </b>'+redlog+planetlog);
 </script>
 </body>
 </html>

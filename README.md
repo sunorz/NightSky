@@ -8,7 +8,9 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 - Star size randomized
 - Stars flashing randomly
 
-## NewAndImproved
+## ChangedLog
+
+### v1.0.0
 - Random color of stars
 - Add moon phase changes
 - Moon phase angle randomized
@@ -18,6 +20,13 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 - Gaussian blurring of planets and stars
 - Random angle of the moon and planets
 - Find message appears when planets appear
+
+### v1.0.1
+- Remove tips
+- Mouse over planets zooms in and becomes clearer
+- Reduced size of planet size
+- Randomized the length of the stars' blinking animation
+- Modified the probability of stars' colors appearing
   
 # Copyright
 - moon.jpg YAORUSHENG/GETTY IMAGES
