@@ -18,7 +18,7 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 - Random angle of the moon and planets
 - Find tips appears when planet appear
 
-## Demo
+# Demo
 [demo](https://sunorz.github.io/NightSky/)
   
 # Copyright
