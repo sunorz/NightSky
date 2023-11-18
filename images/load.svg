@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 28.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 38 38" style="enable-background:new 0 0 38 38;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:url(#Oval-2_00000182495415938728239480000016272549190343695017_);stroke-width:2;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#989898;}
+</style>
+<g>
+	<g transform="translate(1 1)">
+		
+			<linearGradient id="Oval-2_00000071557908413623298980000012274257639626243001_" gradientUnits="userSpaceOnUse" x1="-888.68" y1="530.1531" x2="-888.1036" y2="529.9144" gradientTransform="matrix(18 0 0 -18 16016 9542)">
+			<stop  offset="0" style="stop-color:#989898;stop-opacity:0"/>
+			<stop  offset="0.6315" style="stop-color:#989898;stop-opacity:0.631"/>
+			<stop  offset="1" style="stop-color:#989898"/>
+		</linearGradient>
+		
+			<path id="Oval-2" style="fill:none;stroke:url(#Oval-2_00000071557908413623298980000012274257639626243001_);stroke-width:2;" d="
+			M36,18c0-9.9-8.1-18-18-18"/>
+		<circle class="st1" cx="36" cy="18" r="1"/>
+	</g>
+</g>
+</svg>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>nightsky</title>
+    <style>
+html,body{
+    background:#000;
+    overflow: hidden;
+}
+.warp{
+    margin:10% auto;
+    width:80%;
+    max-width:1024px;
+    text-align: center;
+    vertical-align: middle;
+}
+.moon{
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    background: url(images/moon.jpg) no-repeat;
+    z-index: 999;
+    transform-origin:center center;
+}
+.desc{
+    color:#545454;
+   font-family: Consolas,Menlo,"courier new",monospace;
+   line-height: 1.5;
+   width: 90%;
+   max-width: 800px;
+   margin: 50px auto;
+}
+p{
+     color:#545454;
+     line-height: 1.5;
+     font-family: Consolas,Menlo,"courier new",monospace;
+}
+span:not(.default){
+    width:10px;
+    height: 10px;    
+    background-size: cover;
+    animation: blink 1s infinite;
+    -webkit-animation: blink 1s infinite;
+    -moz-animation: blink 1s infinite;
+    -ms-animation: blink 1s infinite;
+    -o-animation: blink 1s infinite;
+    position: absolute;
+    filter: blur(1px);
+}
+.planet{
+    width:20px;
+    height: 20px;    
+    background-size: cover;
+    position: absolute;
+    display: inline-block;
+    cursor: pointer;
+    filter: blur(1px);
+}
+@keyframes blink {
+    0%{opacity: 0;}
+    100%{opacity: 1;}
+}
+.cover{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    z-index:999;
+}
+.cover div{
+    text-align:center;
+    top:50%;
+    position:absolute;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+.cover span{
+    vertical-align:middle;
+}
+.cover img{
+    height:4em;
+    animation:loading 1.5s infinite ease;
+}
+@keyframes loading{from{transform:rotate(0)}to{transform:rotate(1turn)}}
+</style>
+</head>
+<body>
+    <div class="cover"><div><span class="default"><img src="images/load.svg" alt><p>网页中天体的形状、位置、角度等和实际情况均无关联。</p><p>The shapes, positions, and angles of the celestial objects in this site are not relevant to the actual situation.</p></span></div></div>
+    <div class="warp"><div class="moon"></div><div class="desc">Good night.</div></div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        const d = new Date(); 
+const len = d.getTime();
+const offset = d.getTimezoneOffset() * 60000;
+const utcTime = len + offset;
+const date = new Date(utcTime + 3600000 * 8);
+let hours = date.getHours();
+        if(hours<8){
+            $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -63px');
+        }
+        else if(hours>7&&hours<16){
+            hours-=8;
+            $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -196px');
+        }
+        else if(hours>15&&hours<24){
+             hours -=16;
+            $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -323px');
+        }
+const screenW = document.documentElement.clientWidth;
+const screenH = document.documentElement.clientHeight;
+let item = '';
+const offsetX = $(".moon").offset().left;
+const offsetY = $(".moon").offset().top;
+const moonRoll = randomNum(1,360);
+$(".moon").css('transform','rotate('+moonRoll+'deg)');
+const planet = randomNum(1,10);
+if(planet>0&&planet<8){
+    $(".desc").text('Find a planet!');
+    var span = document.createElement('i');    
+    document.body.appendChild(span);
+    $("i").addClass("planet");
+    var x = parseInt(Math.random() * screenW);
+    var y = parseInt(Math.random() * screenH);
+    if(x>=offsetX&&x<=(offsetX+128)&&y>=offsetY&&y<=(offsetY+128)){
+       x+=128;
+       y+=128;
+    }
+    span.style.left = x + 'px';
+    span.style.top = y + 'px';
+    span.style.backgroundImage = 'url(images/'+planet+'.jpg)';
+    span.style.zIndex = "0";
+    $(".planet").css('transform','rotate('+moonRoll+'deg)');
+}
+for(var i=0; i<60; i++){ 
+const starColorNum =  Math.random()*10;
+if(starColorNum<0.08){
+    item = '-red';
+}
+else if(starColorNum>0.08&&starColorNum<0.15){
+    item = '-yellow';
+}
+else{
+    item = '';
+}
+    var span = document.createElement('span');    
+    document.body.appendChild(span);
+    var x = parseInt(Math.random() * screenW);
+    var y = parseInt(Math.random() * screenH);
+    if(x>=offsetX&&x<=(offsetX+128)&&y>=offsetY&&y<=(offsetY+128)){
+        continue;
+    }
+    span.style.left = x + 'px';
+    span.style.top = y + 'px';
+    span.style.backgroundImage = 'url(star'+item+'.png)';
+    span.style.zIndex = "0";
+    var scale = Math.random() * 1.5;
+    span.style.transform = 'scale('+ scale + ', ' + scale + ')';
+    var rate = Math.random() * 1.5;
+span.style.animationDelay = rate*100 + 's';
+}
+setTimeout(function(){
+$(".cover").hide();
+},20000);
+function randomNum(minNum,maxNum){ 
+    switch(arguments.length){ 
+        case 1: 
+            return parseInt(Math.random()*minNum+1,10); 
+        break; 
+        case 2: 
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+        break; 
+            default: 
+                return 0; 
+            break; 
+    } 
+} 
+$(".planet").hover(function(){
+    $(".desc").text('Got it!');
+});
+</script>
+</body>
+</html>
