@@ -20,6 +20,9 @@
 - 月球、行星角度随机
 - 当出现行星时出现寻找提示信息
 
+# 预览
+[效果预览](https://sunorz.github.io/NightSky/)
+
 # 版权
 - moon.jpg YAORUSHENG/GETTY IMAGES
 - 1.jpg~7.jpg NASA
