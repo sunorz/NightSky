@@ -4,8 +4,8 @@ Moon phases and stars in the page.
 The shapes, positions, and angles of the celestial objects in this site are not relevant to the actual situation.
 
 ## BaseCode
-- Randomized Star Position
-- Star size randomized
+- Stars position randomized
+- Stars size randomized
 - Stars flashing randomly
 
 ## ChangedLog
@@ -13,10 +13,9 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 ### v1.0.0
 - Random color of stars
 - Add moon phase changes
-- Moon phase angle randomized
 - Moon phases vary with hourly patterns
 - Planets appear randomly
-- Planet positions are randomized
+- Planets position are randomized
 - Gaussian blurring of planets and stars
 - Random angle of the moon and planets
 - Find message appears when planets appear
