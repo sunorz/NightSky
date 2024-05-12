@@ -62,6 +62,18 @@ span:not(.default){
     99%{opacity:0;}
     100%{opacity: 1;}
 }
+@keyframes blink30 {
+    0%{opacity: 0.3;}
+    98%{opacity: 0.3;}
+    99%{opacity:0;}
+    100%{opacity: 0.3;}
+}
+@keyframes blink50 {
+    0%{opacity: 0.5;}
+    98%{opacity: 0.5;}
+    99%{opacity:0;}
+    100%{opacity: 0.5;}
+}
 .cover{
     position:fixed;
     top:0;
@@ -84,6 +96,7 @@ span:not(.default){
 .cover img{
     height:4em;
     animation:loading 1.5s infinite ease;
+    -webkit-animation:loading 1.5s infinite ease;
 }
 @keyframes loading{from{transform:rotate(0)}to{transform:rotate(1turn)}}
 </style>
@@ -114,8 +127,10 @@ let starlog=0,redlog=0,yellowlog=0,planetlog='';
              hours -=16;
             $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -323px');
         }
-const screenW = document.documentElement.clientWidth;
-const screenH = document.documentElement.clientHeight;
+//const screenW = document.documentElement.clientWidth;
+//const screenH = document.documentElement.clientHeight;
+const screenW = window.screen.width;
+const screenH = window.screen.height;
 let item = '';
 const offsetX = $(".moon").offset().left;
 const offsetY = $(".moon").offset().top;
@@ -137,20 +152,36 @@ if(planet>0&&planet<8){
     span.style.backgroundImage = 'url(images/'+planet+'.jpg)';
     span.style.zIndex = "0";
     $(".planet").css('transform','rotate('+moonRoll+'deg)');
-    planetlog ='<br>The visible planet is ';
+    planetlog ='';
     switch(planet){
-        case 1:planetlog+='<b>Mercury</b>.';break;
-        case 2:planetlog+='<b>Venus</b>.';break;
-        case 3:planetlog+='<b>Mars</b>.';break;
-        case 4:planetlog+='<b>Saturn</b>.';break;
-        case 5:planetlog+='<b>Neptune</b>.';break;
-        case 6:planetlog+='<b>Uranus</b>.';break;
-        case 7:planetlog+='<b>Jupiter</b>.';break;
+        case 1:planetlog+='Mercury';break;
+        case 2:planetlog+='Venus';break;
+        case 3:planetlog+='Mars';break;
+        case 4:planetlog+='Saturn';break;
+        case 5:planetlog+='Neptune';break;
+        case 6:planetlog+='Uranus';break;
+        case 7:planetlog+='Jupiter';break;
         default:break;
     }
 }
-for(var i=0; i<60; i++){ 
+$(".planet").attr("title",planetlog);
+$(".planet").click(function(){
+$(".cover").show();
+setTimeout(function(){
+$(".cover").fadeOut();
+},5000);
+    $(".cover").show();
+    //$("span").not(".default").fadeOut();
+    $(".moon").css("background","none");
+    $(".moon").css('transform','rotate(0deg)');
+    $(".moon").html('<img src="images/'+planetlog+'.webp" alt="'+planetlog+'" width="100%">');
+    $(".desc").html(planetlog);
+    $("i").fadeOut();
+});
+for(var i=0; i<2048; i++){ 
 const starColorNum =  randomNum(1,100);
+const starOpacity =  randomNum(1,3);
+var so = '';
 if(starColorNum<2){
     redlog++;
     item = '-red';
@@ -163,6 +194,11 @@ else{
     starlog++;
     item = '';
 }
+switch(starOpacity){
+    case 2:so='30';break;
+    case 3:so='50';break;
+    default:break;
+}
     var span = document.createElement('span');    
     document.body.appendChild(span);
     var x = parseInt(Math.random() * screenW);
@@ -174,12 +210,21 @@ else{
     span.style.top = y + 'px';
     span.style.backgroundImage = 'url(star'+item+'.png)';
     span.style.zIndex = "0";
-    var scale = Math.random() * 1.5;
+    var scale = Math.random() * 0.6;
+if(scale>0.56){
+    scale=Math.random() * 1.5;
+}
+else if(scale<0.56&&scale>0.1){
+    scale=0.3;
+}
+else{
+    scale=0.1;
+}
     span.style.transform = 'scale('+ scale + ', ' + scale + ')';
     var rate = Math.random() * 15;
     span.style.animationDelay = rate + 's';
     var interval = Math.random()*150;
-    span.style.animation = 'blink '+interval+'s infinite';
+    span.style.animation = 'blink'+so+' '+interval+'s infinite';
 }
 function randomNum(minNum,maxNum){ 
     switch(arguments.length){ 
@@ -193,16 +238,19 @@ function randomNum(minNum,maxNum){
                 return 0; 
             break; 
     } 
-} 
-$('.planet').hover(function(){
-    $(this).css('filter','blur(0px)');
-    $(this).css('transform','scale(5) rotate('+moonRoll+'deg)');
+}
+$(".moon").one("dblclick",function(){
+    $(".planet").click();
 });
-$('.planet').mouseleave(function(){
-     $(this).css('transform','scale(1) rotate('+moonRoll+'deg)');
-     $(this).css('filter','blur(1px)');
-});
-//$('.desc').html('<b>Normol Stars : </b>'+starlog+'<br><b>Yellow Stars : </b>'+yellowlog+'<br><b>Red Stars : </b>'+redlog+planetlog);
+//$('.planet').hover(function(){
+    //$(this).css('filter','blur(0px)');
+    //$(this).css('transform','scale(5) rotate('+moonRoll+'deg)');
+//});
+//$('.planet').mouseleave(function(){
+     //$(this).css('transform','scale(1) rotate('+moonRoll+'deg)');
+     //$(this).css('filter','blur(1px)');
+//});
+//$('.desc').html('screenW:'+screenW+'screenH:'+screenH);
 </script>
 </body>
 </html>

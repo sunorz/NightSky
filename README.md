@@ -10,6 +10,13 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 
 ## ChangedLog
 
+### v1.1.0
+
+- Decrease twinkle frequency
+- Reduce the number of twinkling stars
+- Increase the total number of stars
+- Clicking on a planet or double clicking on a moon phase will jump to a larger view of the planets (not randomized to any planet will not be implemented)
+
 ### v1.0.0
 - Random color of stars
 - Add moon phase changes
