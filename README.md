@@ -13,6 +13,7 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 ### v1.1.1
 - Replacing the planet's big picture
 - Fixed the problem of incomplete display of horizontal screen on mobile devices
+- Make certain elements unselectable by users
   
 ### v1.1.0
 
