@@ -12,6 +12,11 @@
 
 ## 更新日志
 
+### v1.1.1
+
+- 更换行星大图
+- 修复移动端横屏显示不全的问题
+  
 ### v1.1.0
 
 - 降低闪烁频率
@@ -40,7 +45,8 @@
 
 # 版权
 - moon.jpg YAORUSHENG/GETTY IMAGES
-- 1.jpg~7.jpg NASA
+- 行星缩略图 NASA
+- 行星3D建模 Vito Technology Inc.
 - 基本代码 [是乃德也是Ned](https://zhuanlan.zhihu.com/p/506079249)
 - 修改代码 [Sunplace](https://blog.kkii.org)
 

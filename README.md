@@ -10,6 +10,10 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 
 ## ChangedLog
 
+### v1.1.1
+- Replacing the planet's big picture
+- Fixed the problem of incomplete display of horizontal screen on mobile devices
+  
 ### v1.1.0
 
 - Decrease twinkle frequency
@@ -35,8 +39,8 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 - Modified the probability of stars' colors appearing
   
 # Copyright
-- moon.jpg YAORUSHENG/GETTY IMAGES
-- 1.jpg~7.jpg NASA
+- Planet thumbnails by NASA
+- Planet 3D model by Vito Technology Inc.
 - base code [是乃德也是Ned](https://zhuanlan.zhihu.com/p/506079249)
 - new and improved [Sunplace](https://blog.kkii.org)
 

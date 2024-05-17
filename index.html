@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>nightsky</title>
     <style>
 html,body{
@@ -23,6 +23,10 @@ html,body{
     background: url(images/moon.jpg) no-repeat;
     z-index: 999;
     transform-origin:center;
+    -ms-user-select:none;
+-webkit-user-select:none;
+-moz-user-select:none;
+user-select:none;
 }
 .desc{
     color:#545454;
@@ -37,6 +41,7 @@ p{
      color:#545454;
      line-height: 1.5;
      font-family: Consolas,Menlo,"courier new",monospace,STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
+     user-select: none;
 }
 span:not(.default){
     width:10px;
@@ -55,6 +60,7 @@ span:not(.default){
     transform-origin: center;
     transition-duration:2s;
     cursor: pointer;
+    user-select: none;
 }
 @keyframes blink {
     0%{opacity: 1;}
@@ -89,14 +95,26 @@ span:not(.default){
     position:absolute;
     left:50%;
     transform:translate(-50%,-50%);
+    -ms-user-select:none;
+-webkit-user-select:none;
+-moz-user-select:none;
+user-select:none;
 }
 .cover span{
     vertical-align:middle;
+    -ms-user-select:none;
+-webkit-user-select:none;
+-moz-user-select:none;
+user-select:none;
 }
 .cover img{
     height:4em;
     animation:loading 1.5s infinite ease;
     -webkit-animation:loading 1.5s infinite ease;
+   -ms-user-select:none;
+-webkit-user-select:none;
+-moz-user-select:none;
+user-select:none;
 }
 @keyframes loading{from{transform:rotate(0)}to{transform:rotate(1turn)}}
 </style>
@@ -127,10 +145,8 @@ let starlog=0,redlog=0,yellowlog=0,planetlog='';
              hours -=16;
             $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -323px');
         }
-//const screenW = document.documentElement.clientWidth;
-//const screenH = document.documentElement.clientHeight;
-const screenW = window.screen.width;
-const screenH = window.screen.height;
+const screenW = document.documentElement.clientWidth;
+const screenH = document.documentElement.clientHeight;
 let item = '';
 const offsetX = $(".moon").offset().left;
 const offsetY = $(".moon").offset().top;
@@ -174,7 +190,8 @@ $(".cover").fadeOut();
     //$("span").not(".default").fadeOut();
     $(".moon").css("background","none");
     $(".moon").css('transform','rotate(0deg)');
-    $(".moon").html('<img src="images/'+planetlog+'.webp" alt="'+planetlog+'" width="100%">');
+    $(".desc").css('margin','0 auto');
+    $(".moon").html('<img src="images/'+planetlog+'.webp" alt="'+planetlog+'" width="100%" style="    filter: blur(2px);">');
     $(".desc").html(planetlog);
     $("i").fadeOut();
 });
