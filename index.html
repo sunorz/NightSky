@@ -48,7 +48,7 @@
             will-change: left, top, transform;
         }
 
-        .spaceship svg {
+        .spaceship img {
             display: block;
             width: 100%;
             height: 100%;
@@ -535,24 +535,12 @@
             var sinI = Math.sin(INC);
             var ship = null, rafId = null, startTime = 0, clickTimer = null;
 
-            // NASA LRO (Lunar Reconnaissance Orbiter), front view.
-            // Random black-and-white fills: each major part is randomly
-            // black or white on every creation, stroke is the opposite.
-            function bw() { return Math.random() < 0.75 ? '#f5f5f5' : '#111'; }
-            function bwStroke(fill) { return fill === '#f5f5f5' ? '#111' : '#f5f5f5'; }
-            function lroSVG() {
-                var p1 = bw(), p2 = bw(), p3 = bw(), p4 = bw();
-                var bt = bw(), bm = bw(), an = bw(), nz = bw();
-                return '<svg viewBox="0 0 34 24" width="11.76" height="8.82" xmlns="http://www.w3.org/2000/svg">'
-                    + '<polygon points="17,0.5 15,6 19,6" fill="' + an + '" stroke="' + bwStroke(an) + '" stroke-width="0.5"/>'
-                    + '<rect x="0" y="8" width="6" height="12" fill="' + p1 + '" stroke="' + bwStroke(p1) + '" stroke-width="0.6"/>'
-                    + '<rect x="6" y="8" width="6" height="12" fill="' + p2 + '" stroke="' + bwStroke(p2) + '" stroke-width="0.6"/>'
-                    + '<rect x="22" y="8" width="6" height="12" fill="' + p3 + '" stroke="' + bwStroke(p3) + '" stroke-width="0.6"/>'
-                    + '<rect x="28" y="8" width="6" height="12" fill="' + p4 + '" stroke="' + bwStroke(p4) + '" stroke-width="0.6"/>'
-                    + '<rect x="12" y="6" width="10" height="6" fill="' + bt + '" stroke="' + bwStroke(bt) + '" stroke-width="0.7"/>'
-                    + '<rect x="12" y="12" width="10" height="6" fill="' + bm + '" stroke="' + bwStroke(bm) + '" stroke-width="0.7"/>'
-                    + '<polygon points="14,18 20,18 19,22 15,22" fill="' + nz + '" stroke="' + bwStroke(nz) + '" stroke-width="0.6"/>'
-                    + '</svg>';
+            // NASA LRO bitmap: pre-rendered 8x PNG (94x71), displayed at
+            // 11.76x8.82. The 8x downscale gives the soft photographic blur.
+            // 6 variants with random black/white fills; pick one per creation.
+            function lroIMG() {
+                var v = Math.floor(Math.random() * 6);
+                return '<img src="images/lro_bmp_' + v + '.png" width="11.76" height="8.82" alt="">';
             }
 
             // Cubic-Bezier easing: maps x (0..1) to y (0..1).
@@ -597,7 +585,7 @@
                 if (ship) return;
                 ship = document.createElement('div');
                 ship.className = 'spaceship';
-                ship.innerHTML = lroSVG();
+                ship.innerHTML = lroIMG();
                 document.body.appendChild(ship);
                 startTime = performance.now();
                 var ease = cubicBezier(0.42, 0, 0.58, 1); // Bezier speed curve
