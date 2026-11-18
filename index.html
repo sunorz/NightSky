@@ -60,13 +60,12 @@
             user-select: none;
         }
 
-        #starfield {
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 0;
-            pointer-events: none;
-            display: none; /* shown only after the loading cover fades */
+        span:not(.default) {
+            width: 10px;
+            height: 10px;
+            background-size: cover;
+            position: absolute;
+            filter: blur(1px);
         }
 
         .planet {
@@ -82,6 +81,11 @@
             user-select: none;
         }
 
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
             98% {
                 opacity: 1;
             }
@@ -95,6 +99,11 @@
             }
         }
 
+        @keyframes blink30 {
+            0% {
+                opacity: 0.3;
+            }
+
             98% {
                 opacity: 0.3;
             }
@@ -107,6 +116,11 @@
                 opacity: 0.3;
             }
         }
+
+        @keyframes blink50 {
+            0% {
+                opacity: 0.5;
+            }
 
             98% {
                 opacity: 0.5;
@@ -253,7 +267,6 @@
 </head>
 
 <body>
-    <canvas id="starfield"></canvas>
     <audio id="bg-music" autoplay loop>
         <source src="bgm.mp3" type="audio/mpeg">
         您的浏览器不支持音频播放。
@@ -283,58 +296,11 @@
         let offsetX = $(".moon").offset().left;
         let offsetY = $(".moon").offset().top;
         let mwCx, mwCy, mwHalf, mwLen, mwScale, mwRift;
-        let stars = []; // star data (x, y, size, img, base opacity, blink)
-        var starImgs = {};
-        (function () {
-            var names = ['', '-red', '-yellow'];
-            for (var k = 0; k < names.length; k++) {
-                var im = new Image();
-                im.src = 'star' + names[k] + '.png';
-                starImgs[names[k]] = im;
-            }
-        })();
-        var starCanvas = null, starCtx = null;
-        // Draw every star to the canvas with its current blink opacity.
-        // Same blink as the old CSS keyframes: full base opacity for 98%
-        // of the period, a brief dip to 0 at 99%, back at 100%.
-        function drawStars() {
-            if (!starCtx) return;
-            var now = Date.now() / 1000;
-            starCtx.clearRect(0, 0, screenW, screenH);
-            starCtx.filter = 'blur(1px)'; // same soft glow as the old span blur
-            for (var i = 0; i < stars.length; i++) {
-                var st = stars[i];
-                var im = starImgs[st.img];
-                if (!im || !im.complete) continue;
-                var op = st.base;
-                if (st.period > 0) {
-                    var ph = (((now + st.delay) % st.period) / st.period);
-                    if (ph >= 0.98 && ph < 0.99) op = st.base * (1 - (ph - 0.98) / 0.01);
-                    else if (ph >= 0.99) op = st.base * ((ph - 0.99) / 0.01);
-                }
-                starCtx.globalAlpha = op;
-                starCtx.drawImage(im, st.x - st.size / 2, st.y - st.size / 2, st.size, st.size);
-            }
-            starCtx.filter = 'none';
-            starCtx.globalAlpha = 1;
-        }
-        // Twinkle on requestAnimationFrame (throttled to ~30fps) so each
-        // star blinks on its own random clock, not on one fixed 100ms grid.
-        var lastDraw = 0;
-        function twinkleLoop(now) {
-            if (now - lastDraw >= 33) {
-                lastDraw = now;
-                drawStars();
-            }
-            requestAnimationFrame(twinkleLoop);
-        }
-        requestAnimationFrame(twinkleLoop);
+        let starEls = []; // star <span> elements, removed on regeneration
         setTimeout(function () {
             $(".cover").fadeOut();
             //$(".desc").fadeIn();
             $("#play-button").fadeIn();
-            var sf = document.getElementById('starfield');
-            if (sf) sf.style.display = 'block';
         }, 5000);
         let starlog = 0, redlog = 0, yellowlog = 0, planetlog = '';
         // Real moon phase (CST) from a free API. moon.jpg holds 24 frames
@@ -466,15 +432,8 @@
             mwLen = mwHalf * 2;
             mwScale = Math.min(screenW, screenH) * 0.05;
             mwRift = mwScale * 0.6;
-            if (!starCanvas) {
-                starCanvas = document.getElementById('starfield');
-                starCtx = starCanvas.getContext('2d');
-            }
-            starCanvas.width = screenW;
-            starCanvas.height = screenH;
-            starCanvas.style.width = screenW + 'px';
-            starCanvas.style.height = screenH + 'px';
-            stars = [];
+            for (var s = 0; s < starEls.length; s++) starEls[s].remove();
+            starEls = [];
             starlog = 0; redlog = 0; yellowlog = 0;
         let totalStars = 1024;
         if(window.innerWidth<=767)
@@ -512,6 +471,13 @@
             if (x >= offsetX && x <= (offsetX + 128) && y >= offsetY && y <= (offsetY + 128)) {
                 continue;
             }
+            var span = document.createElement('span');
+            document.body.appendChild(span);
+            starEls.push(span);
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.backgroundImage = 'url(star' + item + '.png)';
+            span.style.zIndex = "0";
             var scale = Math.random() * 0.6;
             if (scale > 0.56) {
                 scale = Math.random() * 1.5;
@@ -522,19 +488,12 @@
             else {
                 scale = 0.1;
             }
-            var base = 1;
-            if (so === '30') base = 0.3;
-            else if (so === '50') base = 0.5;
-            stars.push({
-                x: x, y: y,
-                size: 10 * scale,
-                img: item,
-                base: base,
-                delay: Math.random() * 15,
-                period: Math.random() * 150
-            });
+            span.style.transform = 'scale(' + scale + ', ' + scale + ')';
+            var rate = Math.random() * 15;
+            span.style.animationDelay = rate + 's';
+            var interval = Math.random() * 150;
+            span.style.animation = 'blink' + so + ' ' + interval + 's infinite';
         }
-        drawStars();
         }
 
         generateStars(); // initial starfield
