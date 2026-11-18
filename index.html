@@ -517,6 +517,15 @@
         }
         window.addEventListener('resize', scheduleStars);
         if (window.visualViewport) window.visualViewport.addEventListener('resize', scheduleStars);
+        // No zooming out: Ctrl+wheel-down and Ctrl+- would shrink the
+        // stars. Zooming in stays allowed. (Mobile pinch is already
+        // blocked by the viewport meta: user-scalable=no.)
+        window.addEventListener('wheel', function (e) {
+            if (e.ctrlKey && e.deltaY > 0) e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && (e.key === '-' || e.key === '_')) e.preventDefault();
+        });
 
         function randomNum(minNum, maxNum) {
             switch (arguments.length) {
