@@ -39,21 +39,6 @@
             cursor: pointer;
         }
 
-        .spaceship {
-            position: absolute;
-            width: 11.76px;
-            height: 8.82px;
-            z-index: 1000;
-            pointer-events: none;
-            will-change: left, top, transform;
-        }
-
-        .spaceship img {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
         .desc {
             color: #7e7d7d;
             position: relative;
@@ -519,111 +504,6 @@
             }
             lastMoonTap = now;
         });
-
-        // Single click on the moon: a spaceship orbits the moon in 3D.
-        // The orbit is a circle inclined 45 deg, so the ship flies from in
-        // front of the moon to behind it (the moon occludes it when behind).
-        // The projected ellipse is tilted 45 deg to the right.
-        (function () {
-            var TILT = -45 * Math.PI / 180;   // in-plane tilt, major axis like /
-            var INC = 70 * Math.PI / 180;     // orbital inclination (flatter orbit)
-            var R = 85;                        // orbit radius, px (tight, just outside the moon)
-            var A = R;                         // semi-major axis
-            var B = R * Math.cos(INC);         // semi-minor axis
-            var PERIOD = 12000;                // ms per orbit (slow)
-            var cosT = Math.cos(TILT), sinT = Math.sin(TILT);
-            var sinI = Math.sin(INC);
-            var ship = null, rafId = null, startTime = 0, clickTimer = null;
-
-            // NASA LRO bitmap: pre-rendered 8x PNG (94x71), displayed at
-            // 11.76x8.82. The 8x downscale gives the soft photographic blur.
-            // 6 variants with random black/white fills; pick one per creation.
-            function lroIMG() {
-                var v = Math.floor(Math.random() * 6);
-                return '<img src="images/lro_bmp_' + v + '.png" width="11.76" height="8.82" alt="">';
-            }
-
-            // Cubic-Bezier easing: maps x (0..1) to y (0..1).
-            function cubicBezier(x1, y1, x2, y2) {
-                function sampleX(t) {
-                    return 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;
-                }
-                function sampleY(t) {
-                    return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;
-                }
-                function sampleDX(t) {
-                    return 3 * (1 - t) * (1 - t) * x1 + 6 * (1 - t) * t * (x2 - x1) + 3 * t * t * (1 - x2);
-                }
-                function solveX(x) {
-                    var t = x;
-                    for (var i = 0; i < 8; i++) {
-                        var err = sampleX(t) - x;
-                        if (Math.abs(err) < 1e-6) return t;
-                        var d = sampleDX(t);
-                        if (Math.abs(d) < 1e-6) break;
-                        t -= err / d;
-                    }
-                    var t0 = 0, t1 = 1;
-                    t = x;
-                    while (t0 < t1) {
-                        var v = sampleX(t);
-                        if (Math.abs(v - x) < 1e-6) return t;
-                        if (x > v) t0 = t; else t1 = t;
-                        t = (t1 - t0) * 0.5 + t0;
-                    }
-                    return t;
-                }
-                return function (x) { return sampleY(solveX(x)); };
-            }
-
-            function moonCenter() {
-                var r = document.querySelector('.moon').getBoundingClientRect();
-                return { x: r.left + r.width / 2 + window.scrollX, y: r.top + r.height / 2 + window.scrollY };
-            }
-
-            function startOrbit() {
-                if (ship) return;
-                ship = document.createElement('div');
-                ship.className = 'spaceship';
-                ship.innerHTML = lroIMG();
-                document.body.appendChild(ship);
-                startTime = performance.now();
-                var ease = cubicBezier(0.42, 0, 0.58, 1); // Bezier speed curve
-                var tick = function (now) {
-                    var c = moonCenter();
-                    var phase = ((now - startTime) / PERIOD) % 1;
-                    var t = ease(phase) * Math.PI * 2;
-                    var lx = A * Math.cos(t);
-                    var ly = B * Math.sin(t);
-                    var x = lx * cosT - ly * sinT;
-                    var y = lx * sinT + ly * cosT;
-                    var z = R * Math.sin(t) * sinI;   // depth: >0 in front, <0 behind
-                    // Nadir-pointing like the real LRO: the antenna (-y) points
-                    // radially outward from the Moon, instruments (+y) toward it.
-                    var ang = Math.atan2(x, -y) * 180 / Math.PI;
-                    ship.style.left = (c.x + x - 5.88) + 'px';
-                    ship.style.top = (c.y + y - 4.41) + 'px';
-                    ship.style.transform = 'rotate(' + ang + 'deg)';
-                    ship.style.zIndex = (z > 0) ? '1000' : '998';
-                    rafId = requestAnimationFrame(tick);
-                };
-                rafId = requestAnimationFrame(tick);
-            }
-
-            function stopOrbit() {
-                if (rafId) cancelAnimationFrame(rafId);
-                rafId = null;
-                if (ship) { ship.remove(); ship = null; }
-            }
-
-            document.querySelector('.moon').addEventListener('click', function () {
-                if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; return; }
-                clickTimer = setTimeout(function () {
-                    clickTimer = null;
-                    if (ship) stopOrbit(); else startOrbit();
-                }, 300);
-            });
-        })();
 
         $(document).ready(function () {
 var resulti = '25th launch, launch time: 2026-08-16T11:07:35Z';
