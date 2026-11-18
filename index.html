@@ -261,27 +261,6 @@
             z-index: 10;
             cursor: pointer;
         }
-
-        .help-tip {
-            position: absolute;
-            left: 0;
-            bottom: 100%;
-            margin-bottom: 8px;
-            padding: 4px 8px;
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            color: #fff;
-            font-size: 11px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.15s ease;
-        }
-
-        .help-btn:hover .help-tip {
-            opacity: 1;
-        }
     </style>
     <link rel="icon" href="data:;base64,=">
 </head>
@@ -591,7 +570,7 @@ var resulti = '25th launch, launch time: 2026-08-16T11:07:35Z';
         //});
         //$('.desc').html('screenW:'+screenW+'screenH:'+screenH);
     </script>
-    <a class="help-btn" href="references.html" aria-label="Information"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.4 9a2.9 2.9 0 1 1 4.2 2.6c-.8.35-1.6.9-1.6 1.9v.4" stroke="#000" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.5" fill="#000"/></svg><span class="help-tip">Information</span></a>
+    <a class="help-btn" href="references.html" title="Information" aria-label="Information"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.4 9a2.9 2.9 0 1 1 4.2 2.6c-.8.35-1.6.9-1.6 1.9v.4" stroke="#000" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.5" fill="#000"/></svg></a>
 </body>
 
 </html>
