@@ -41,8 +41,8 @@
 
         .spaceship {
             position: absolute;
-            width: 14px;
-            height: 10px;
+            width: 12px;
+            height: 9px;
             z-index: 1000;
             pointer-events: none;
             will-change: left, top, transform;
@@ -535,29 +535,25 @@
             var sinI = Math.sin(INC);
             var ship = null, rafId = null, startTime = 0, clickTimer = null;
 
-            // NASA LRO (Lunar Reconnaissance Orbiter), front view, black & white.
-            // 4 solar panels (2 pairs), cylindrical body, antenna cone, nozzle.
-            var SVG = '<svg viewBox="0 0 34 24" width="14" height="10" xmlns="http://www.w3.org/2000/svg">'
-                + '<polygon points="17,0.5 15,6 19,6" fill="#777" stroke="#111" stroke-width="0.5"/>'
-                + '<rect x="0" y="8" width="6" height="12" fill="#d0d0d0" stroke="#111" stroke-width="0.6"/>'
-                + '<rect x="6" y="8" width="6" height="12" fill="#d0d0d0" stroke="#111" stroke-width="0.6"/>'
-                + '<rect x="22" y="8" width="6" height="12" fill="#d0d0d0" stroke="#111" stroke-width="0.6"/>'
-                + '<rect x="28" y="8" width="6" height="12" fill="#d0d0d0" stroke="#111" stroke-width="0.6"/>'
-                + '<line x1="3" y1="8" x2="3" y2="20" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="9" y1="8" x2="9" y2="20" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="25" y1="8" x2="25" y2="20" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="31" y1="8" x2="31" y2="20" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="0" y1="12" x2="12" y2="12" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="0" y1="16" x2="12" y2="16" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="22" y1="12" x2="34" y2="12" stroke="#888" stroke-width="0.4"/>'
-                + '<line x1="22" y1="16" x2="34" y2="16" stroke="#888" stroke-width="0.4"/>'
-                + '<circle cx="3" cy="11" r="1.5" fill="#f5f5f5" stroke="#111" stroke-width="0.5"/>'
-                + '<circle cx="31" cy="14" r="1.5" fill="#333" stroke="#111" stroke-width="0.5"/>'
-                + '<rect x="12" y="6" width="10" height="6" fill="#f5f5f5" stroke="#111" stroke-width="0.7"/>'
-                + '<circle cx="15" cy="9" r="1.2" fill="#333"/>'
-                + '<rect x="12" y="12" width="10" height="6" fill="#b8b8b8" stroke="#111" stroke-width="0.7"/>'
-                + '<polygon points="14,18 20,18 19,22 15,22" fill="#888" stroke="#111" stroke-width="0.6"/>'
-                + '</svg>';
+            // NASA LRO (Lunar Reconnaissance Orbiter), front view.
+            // Random black-and-white fills: each major part is randomly
+            // black or white on every creation, stroke is the opposite.
+            function bw() { return Math.random() < 0.5 ? '#f5f5f5' : '#111'; }
+            function bwStroke(fill) { return fill === '#f5f5f5' ? '#111' : '#f5f5f5'; }
+            function lroSVG() {
+                var p1 = bw(), p2 = bw(), p3 = bw(), p4 = bw();
+                var bt = bw(), bm = bw(), an = bw(), nz = bw();
+                return '<svg viewBox="0 0 34 24" width="12" height="9" xmlns="http://www.w3.org/2000/svg">'
+                    + '<polygon points="17,0.5 15,6 19,6" fill="' + an + '" stroke="' + bwStroke(an) + '" stroke-width="0.5"/>'
+                    + '<rect x="0" y="8" width="6" height="12" fill="' + p1 + '" stroke="' + bwStroke(p1) + '" stroke-width="0.6"/>'
+                    + '<rect x="6" y="8" width="6" height="12" fill="' + p2 + '" stroke="' + bwStroke(p2) + '" stroke-width="0.6"/>'
+                    + '<rect x="22" y="8" width="6" height="12" fill="' + p3 + '" stroke="' + bwStroke(p3) + '" stroke-width="0.6"/>'
+                    + '<rect x="28" y="8" width="6" height="12" fill="' + p4 + '" stroke="' + bwStroke(p4) + '" stroke-width="0.6"/>'
+                    + '<rect x="12" y="6" width="10" height="6" fill="' + bt + '" stroke="' + bwStroke(bt) + '" stroke-width="0.7"/>'
+                    + '<rect x="12" y="12" width="10" height="6" fill="' + bm + '" stroke="' + bwStroke(bm) + '" stroke-width="0.7"/>'
+                    + '<polygon points="14,18 20,18 19,22 15,22" fill="' + nz + '" stroke="' + bwStroke(nz) + '" stroke-width="0.6"/>'
+                    + '</svg>';
+            }
 
             // Cubic-Bezier easing: maps x (0..1) to y (0..1).
             function cubicBezier(x1, y1, x2, y2) {
@@ -601,7 +597,7 @@
                 if (ship) return;
                 ship = document.createElement('div');
                 ship.className = 'spaceship';
-                ship.innerHTML = SVG;
+                ship.innerHTML = lroSVG();
                 document.body.appendChild(ship);
                 startTime = performance.now();
                 var ease = cubicBezier(0.42, 0, 0.58, 1); // Bezier speed curve
@@ -618,8 +614,8 @@
                     var tx = dx * cosT - dy * sinT;
                     var ty = dx * sinT + dy * cosT;
                     var ang = Math.atan2(ty, tx) * 180 / Math.PI;
-                    ship.style.left = (c.x + x - 7) + 'px';
-                    ship.style.top = (c.y + y - 5) + 'px';
+                    ship.style.left = (c.x + x - 6) + 'px';
+                    ship.style.top = (c.y + y - 4) + 'px';
                     ship.style.transform = 'rotate(' + ang + 'deg)';
                     ship.style.zIndex = (z > 0) ? '1000' : '998';
                     rafId = requestAnimationFrame(tick);
