@@ -438,6 +438,10 @@
         // Star count scales with viewport area, so zooming out (bigger
         // viewport) adds stars and the density stays constant. Capped so
         // an extreme zoom-out can't spawn tens of thousands of nodes.
+        // Stars also get bigger in CSS pixels when zoomed out (1/zoom),
+        // so the browser's downscaling doesn't shrink them on screen.
+        var zoom = (window.visualViewport && window.visualViewport.scale) || 1;
+        var sizeBoost = Math.min(3, 1 / zoom);
         let totalStars;
         if (window.innerWidth <= 767) {
             totalStars = Math.min(2000, Math.round(screenW * screenH / 800));
@@ -494,7 +498,7 @@
             else {
                 scale = 0.1;
             }
-            span.style.transform = 'scale(' + scale + ', ' + scale + ')';
+            span.style.transform = 'scale(' + (scale * sizeBoost) + ', ' + (scale * sizeBoost) + ')';
             var rate = Math.random() * 15;
             span.style.animationDelay = rate + 's';
             var interval = Math.random() * 150;
