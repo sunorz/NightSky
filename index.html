@@ -323,7 +323,7 @@
         })();
         const moonRoll = randomNum(1, 360);
         $(".moon").css('transform', 'rotate(' + moonRoll + 'deg)');
-        const planet = randomNum(1, 10);
+        const planet = randomNum(1, 7);
         if (planet > 0 && planet < 8) {
             var span = document.createElement('i');
             document.body.appendChild(span);
@@ -494,6 +494,14 @@
         }
         $(".moon").one("dblclick", function () {
             $(".planet").click();
+        });
+        var lastMoonTap = 0;
+        $(".moon").on("touchend", function () {
+            var now = Date.now();
+            if (now - lastMoonTap < 300) {
+                $(".planet").click();
+            }
+            lastMoonTap = now;
         });
         $(document).ready(function () {
 var resulti = '25th launch, launch time: 2026-08-16T11:07:35Z';
