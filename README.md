@@ -1,7 +1,7 @@
 # NightSky
 Moon phases and stars in the page.
 
-The shapes, positions, and angles of the celestial objects in this site are not relevant to the actual situation.
+The positions and sizes of the stars and planets, and the angle of the Moon on this site do not reflect actual conditions.
 
 # Effects
 
