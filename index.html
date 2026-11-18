@@ -315,7 +315,17 @@
             }
             starCtx.globalAlpha = 1;
         }
-        setInterval(drawStars, 100); // 10fps twinkle
+        // Twinkle on requestAnimationFrame (throttled to ~30fps) so each
+        // star blinks on its own random clock, not on one fixed 100ms grid.
+        var lastDraw = 0;
+        function twinkleLoop(now) {
+            if (now - lastDraw >= 33) {
+                lastDraw = now;
+                drawStars();
+            }
+            requestAnimationFrame(twinkleLoop);
+        }
+        requestAnimationFrame(twinkleLoop);
         setTimeout(function () {
             $(".cover").fadeOut();
             //$(".desc").fadeIn();
