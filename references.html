@@ -100,6 +100,26 @@
             font-weight: normal;
         }
 
+        h3 {
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: #fff;
+            margin: 20px 0 8px 0;
+            font-weight: normal;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 0 0 8px 0;
+        }
+
+        code {
+            font-family: Consolas, Menlo, monospace;
+            font-size: 13px;
+            color: #ccc;
+        }
+
         ol {
             margin: 0;
             padding-left: 22px;
@@ -185,6 +205,8 @@
             <li>&#26159;&#20035;&#24403;&#20063;&#26159;Ned. (n.d.). <em>Base code</em>. Zhihu. <a href="https://zhuanlan.zhihu.com/p/506079249">https://zhuanlan.zhihu.com/p/506079249</a></li>
             <li>Sunplace. (n.d.). <em>NightSky</em>. <a href="https://blog.kkii.org">https://blog.kkii.org</a></li>
         </ol>
+        <h3>MOON PHASE API</h3>
+        <p>GET <a href="https://randomapi.dev/api/moon/phase?tz=Asia/Shanghai">https://randomapi.dev/api/moon/phase?tz=Asia/Shanghai</a> &mdash; free, no key. Returns JSON; the site uses <code>data.ageDays</code> (lunar age in days, CST). The moon sprite holds 24 frames in lunar-age order (new &rarr; full &rarr; new), 3 rows &times; 8 columns. Frame = floor(<code>ageDays</code> / 29.53 &times; 24), clamped to 0&ndash;23. If the request fails, the default frame stays. Rotation stays random; brightness and moonrise/set times are not used.</p>
         <a class="back" href="index.html">&larr; Back to the night sky</a>
     </div>
     <script>
