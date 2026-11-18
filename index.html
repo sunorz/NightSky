@@ -435,9 +435,15 @@
             for (var s = 0; s < starEls.length; s++) starEls[s].remove();
             starEls = [];
             starlog = 0; redlog = 0; yellowlog = 0;
-        let totalStars = 1024;
-        if(window.innerWidth<=767)
-        totalStars = 400;
+        // Star count scales with viewport area, so zooming out (bigger
+        // viewport) adds stars and the density stays constant. Capped so
+        // an extreme zoom-out can't spawn tens of thousands of nodes.
+        let totalStars;
+        if (window.innerWidth <= 767) {
+            totalStars = Math.min(2000, Math.round(screenW * screenH / 800));
+        } else {
+            totalStars = Math.min(5000, Math.round(screenW * screenH / 2000));
+        }
         for (var i = 0; i < totalStars; i++) {
             const starColorNum = randomNum(1, 100);
             const starOpacity = randomNum(1, 3);
