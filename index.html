@@ -287,11 +287,16 @@
     </div>
     <script src="js/jquery.min.js"></script>
     <script>
-        const screenW = document.documentElement.clientWidth;
-        const screenH = document.documentElement.clientHeight;
+        // Viewport size, moon position and Milky Way geometry are
+        // re-measured on every regeneration, so the starfield follows
+        // window resize and browser zoom (Ctrl+wheel) in real time.
+        let screenW = document.documentElement.clientWidth;
+        let screenH = document.documentElement.clientHeight;
         let item = '';
-        const offsetX = $(".moon").offset().left;
-        const offsetY = $(".moon").offset().top;
+        let offsetX = $(".moon").offset().left;
+        let offsetY = $(".moon").offset().top;
+        let mwCx, mwCy, mwHalf, mwLen, mwScale, mwRift;
+        let starEls = []; // star <span> elements, removed on regeneration
         setTimeout(function () {
             $(".cover").fadeOut();
             //$(".desc").fadeIn();
@@ -400,12 +405,6 @@
         var mwDy = Math.sin(MW_ANGLE);
         var mwPx = Math.sin(MW_ANGLE);
         var mwPy = Math.cos(MW_ANGLE);
-        var mwCx = screenW / 2;
-        var mwCy = screenH / 2;
-        var mwHalf = Math.min((screenW / 2) / Math.abs(mwDx), (screenH / 2) / Math.abs(mwDy));
-        var mwLen = mwHalf * 2;
-        var mwScale = Math.min(screenW, screenH) * 0.05;
-        var mwRift = mwScale * 0.6;
         function galaxyPos() {
             var t = Math.pow(Math.random(), 0.6);
             var along = (t - 0.5) * mwLen;
@@ -421,6 +420,21 @@
             if (x < 0 || x > screenW || y < 0 || y > screenH) return null;
             return { x: x, y: y };
         }
+        // (Re)generate the whole starfield for the current viewport.
+        function generateStars() {
+            screenW = document.documentElement.clientWidth;
+            screenH = document.documentElement.clientHeight;
+            offsetX = $(".moon").offset().left;
+            offsetY = $(".moon").offset().top;
+            mwCx = screenW / 2;
+            mwCy = screenH / 2;
+            mwHalf = Math.min((screenW / 2) / Math.abs(mwDx), (screenH / 2) / Math.abs(mwDy));
+            mwLen = mwHalf * 2;
+            mwScale = Math.min(screenW, screenH) * 0.05;
+            mwRift = mwScale * 0.6;
+            for (var s = 0; s < starEls.length; s++) starEls[s].remove();
+            starEls = [];
+            starlog = 0; redlog = 0; yellowlog = 0;
         let totalStars = 1024;
         if(window.innerWidth<=767)
         totalStars = 400;
@@ -459,6 +473,7 @@
             }
             var span = document.createElement('span');
             document.body.appendChild(span);
+            starEls.push(span);
             span.style.left = x + 'px';
             span.style.top = y + 'px';
             span.style.backgroundImage = 'url(star' + item + '.png)';
@@ -479,6 +494,19 @@
             var interval = Math.random() * 150;
             span.style.animation = 'blink' + so + ' ' + interval + 's infinite';
         }
+        }
+
+        generateStars(); // initial starfield
+        // Real-time response: window resize and browser zoom (Ctrl+wheel)
+        // both change the CSS viewport size; regenerate the starfield
+        // (debounced so a resize drag doesn't thrash).
+        var resizeTimer = null;
+        function scheduleStars() {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(generateStars, 150);
+        }
+        window.addEventListener('resize', scheduleStars);
+        if (window.visualViewport) window.visualViewport.addEventListener('resize', scheduleStars);
 
         function randomNum(minNum, maxNum) {
             switch (arguments.length) {
