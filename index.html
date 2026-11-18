@@ -66,6 +66,7 @@
             top: 0;
             z-index: 0;
             pointer-events: none;
+            display: none; /* shown only after the loading cover fades */
         }
 
         .planet {
@@ -300,6 +301,7 @@
             if (!starCtx) return;
             var now = Date.now() / 1000;
             starCtx.clearRect(0, 0, screenW, screenH);
+            starCtx.filter = 'blur(1px)'; // same soft glow as the old span blur
             for (var i = 0; i < stars.length; i++) {
                 var st = stars[i];
                 var im = starImgs[st.img];
@@ -313,6 +315,7 @@
                 starCtx.globalAlpha = op;
                 starCtx.drawImage(im, st.x - st.size / 2, st.y - st.size / 2, st.size, st.size);
             }
+            starCtx.filter = 'none';
             starCtx.globalAlpha = 1;
         }
         // Twinkle on requestAnimationFrame (throttled to ~30fps) so each
@@ -330,6 +333,8 @@
             $(".cover").fadeOut();
             //$(".desc").fadeIn();
             $("#play-button").fadeIn();
+            var sf = document.getElementById('starfield');
+            if (sf) sf.style.display = 'block';
         }, 5000);
         let starlog = 0, redlog = 0, yellowlog = 0, planetlog = '';
         // Real moon phase (CST) from a free API. moon.jpg holds 24 frames
