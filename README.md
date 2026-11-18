@@ -3,6 +3,8 @@ Moon phases and stars in the page.
 
 The shapes, positions, and angles of the celestial objects in this site are not relevant to the actual situation.
 
+# Effects
+
 ## BaseCode
 - Stars position randomized
 - Stars size randomized
@@ -40,6 +42,7 @@ The shapes, positions, and angles of the celestial objects in this site are not 
 - Modified the probability of stars' colors appearing
   
 # Copyright
+- moon.jpg YAORUSHENG/GETTY IMAGES
 - Planet thumbnails by NASA
 - Planet 3D model by Vito Technology Inc.
 - base code [是乃德也是Ned](https://zhuanlan.zhihu.com/p/506079249)

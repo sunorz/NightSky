@@ -1,273 +1,597 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>nightsky</title>
     <style>
-html,body{
-    background:#000;
-    overflow: hidden;
-}
-.warp{
-    margin:10% auto;
-    width:80%;
-    max-width:1024px;
-    text-align: center;
-    vertical-align: middle;
-}
-.moon{
-    display: inline-block;
-    width: 128px;
-    height: 128px;
-    background: url(images/moon.jpg) no-repeat;
-    z-index: 999;
-    transform-origin:center;
-    -ms-user-select:none;
--webkit-user-select:none;
--moz-user-select:none;
-user-select:none;
-}
-.desc{
-    color:#545454;
-    font-family: "-apple-system", BlinkMacSystemFont, "Yu Gothic", "游ゴシック", YuGothic, "游ゴシック体", "Noto Sans Japanese", "ヒラギノ角ゴ Pro W3", "メイリオ", "Hiragino Kaku Gothic ProN", "MS PGothic", Osaka, "sans-serif";
-   line-height: 1.5;
-   width: 90%;
-   max-width: 400px;
-   margin: 50px auto;
-   text-align: center;
-}
-p{
-     color:#545454;
-     line-height: 1.5;
-     font-family: Consolas,Menlo,"courier new",monospace,STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
-     user-select: none;
-}
-span:not(.default){
-    width:10px;
-    height: 10px;    
-    background-size: cover;
-    position: absolute;
-    filter: blur(1px);
-}
-.planet{
-    width:10px;
-    height: 10px;    
-    background-size: cover;
-    position: absolute;
-    display: inline-block;
-    filter: blur(1px);
-    transform-origin: center;
-    transition-duration:2s;
-    cursor: pointer;
-    user-select: none;
-}
-@keyframes blink {
-    0%{opacity: 1;}
-    98%{opacity: 1;}
-    99%{opacity:0;}
-    100%{opacity: 1;}
-}
-@keyframes blink30 {
-    0%{opacity: 0.3;}
-    98%{opacity: 0.3;}
-    99%{opacity:0;}
-    100%{opacity: 0.3;}
-}
-@keyframes blink50 {
-    0%{opacity: 0.5;}
-    98%{opacity: 0.5;}
-    99%{opacity:0;}
-    100%{opacity: 0.5;}
-}
-.cover{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:#000;
-    z-index:999;
-}
-.cover div{
-    text-align:center;
-    top:50%;
-    position:absolute;
-    left:50%;
-    transform:translate(-50%,-50%);
-    -ms-user-select:none;
--webkit-user-select:none;
--moz-user-select:none;
-user-select:none;
-}
-.cover span{
-    vertical-align:middle;
-    -ms-user-select:none;
--webkit-user-select:none;
--moz-user-select:none;
-user-select:none;
-}
-.cover img{
-    height:4em;
-    animation:loading 1.5s infinite ease;
-    -webkit-animation:loading 1.5s infinite ease;
-   -ms-user-select:none;
--webkit-user-select:none;
--moz-user-select:none;
-user-select:none;
-}
-@keyframes loading{from{transform:rotate(0)}to{transform:rotate(1turn)}}
-</style>
+        html,
+        body {
+            background: #000;
+            overflow: hidden;
+        }
+
+        .warp {
+            margin: 10% auto;
+            width: 80%;
+            max-width: 1024px;
+            text-align: center;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .moon {
+            display: inline-block;
+            width: 128px;
+            height: 128px;
+            background: url(images/moon.jpg) no-repeat;
+            z-index: 999;
+            transform-origin: center;
+            border-radius: 50%;
+            overflow: hidden;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .desc {
+            color: #7e7d7d;
+            position: relative;
+            z-index: 99;
+            background-color: #000;
+            font-family: Consolas, Menlo, "courier new", monospace, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
+            line-height: 1.5;
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: center;
+            display: none;
+        }
+
+        p {
+            color: #545454;
+            line-height: 1.5;
+            font-family: Consolas, Menlo, "courier new", monospace, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑";
+            user-select: none;
+        }
+
+        span:not(.default) {
+            width: 10px;
+            height: 10px;
+            background-size: cover;
+            position: absolute;
+            filter: blur(1px);
+        }
+
+        .planet {
+            width: 10px;
+            height: 10px;
+            background-size: cover;
+            position: absolute;
+            display: inline-block;
+            filter: blur(1px);
+            transform-origin: center;
+            transition-duration: 2s;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            98% {
+                opacity: 1;
+            }
+
+            99% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes blink30 {
+            0% {
+                opacity: 0.3;
+            }
+
+            98% {
+                opacity: 0.3;
+            }
+
+            99% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes blink50 {
+            0% {
+                opacity: 0.5;
+            }
+
+            98% {
+                opacity: 0.5;
+            }
+
+            99% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 999;
+        }
+
+        .cover div {
+            text-align: center;
+            top: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .cover span {
+            vertical-align: middle;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .cover img {
+            height: 4em;
+            animation: loading 1.5s infinite ease;
+            -webkit-animation: loading 1.5s infinite ease;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @keyframes loading {
+            from {
+                transform: rotate(0)
+            }
+
+            to {
+                transform: rotate(1turn)
+            }
+        }
+
+        .desc {
+            display: none;
+        }
+
+        .desc img {
+            width: 1.5rem;
+        }
+
+        .meteor {
+            display: block;
+            width: 1px;
+            background: transparent;
+            position: absolute;
+            opacity: 0;
+            /*过渡动画*/
+            animation: star-fall 3s linear;
+            -webkit-animation: star-fall 3s linear;
+            -moz-animation: star-fall 3s linear;
+            z-index: 0;
+            user-select: none;
+        }
+
+        .meteor:after {
+            content: '';
+            display: block;
+            border: 0px solid #fff;
+            border-width: 0px 90px 2px 90px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, .5);
+            box-shadow: 0 0 1px 0 rgba(255, 255, 255, .1);
+            /*变形*/
+            transform: rotate(-45deg) translate3d(1px, 3px, 0);
+            -webkit-transform: rotate(-45deg) translate3d(1px, 3px, 0);
+            -moz-transform: rotate(-45deg) translate3d(1px, 3px, 0);
+            transform-origin: 0% 100%;
+            -webkit-transform-origin: 0% 100%;
+            -moz-transform-origin: 0% 100%;
+            z-index: 0;
+            user-select: none;
+        }
+
+        @keyframes star-fall {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translate3d(0, 0, 0);
+                -webkit-transform: scale(0.5) translate3d(0, 0, 0);
+                -moz-transform: scale(0.5) translate3d(0, 0, 0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate3d(-200px, 200px, 0);
+                -webkit-transform: translate3d(-200px, 200px, 0);
+                -moz-transform: translate3d(-200px, 200px, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.2) translate3d(-300px, 300px, 0);
+                -webkit-transform: scale(1.2) translate3d(-300px, 300px, 0);
+                -moz-transform: scale(1.2) translate3d(-300px, 300px, 0);
+            }
+        }
+        .help-btn {
+            position: fixed;
+            left: 10px;
+            bottom: 10px;
+            width: 22px;
+            height: 22px;
+            background: #545454;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .help-tip {
+            position: absolute;
+            left: 0;
+            bottom: 100%;
+            margin-bottom: 8px;
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease;
+        }
+
+        .help-btn:hover .help-tip {
+            opacity: 1;
+        }
+    </style>
+    <link rel="icon" href="data:;base64,=">
 </head>
+
 <body>
-    <div class="cover"><div><span class="default"><img src="images/load.svg" alt><p>网页中天体的形状、位置、角度等和实际情况均无关联。</p><p>The shapes, positions, and angles of the celestial objects in this site are not relevant to the actual situation.</p></span></div></div>
-    <div class="warp"><div class="moon"></div><div class="desc">今夜は月が綺麗ですね</div></div>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <audio id="bg-music" autoplay loop>
+        <source src="bgm.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
+    <div class="cover">
+        <div><span class="default"><img src="images/load.svg" alt>
+                <p>网页中天体的形状、位置、角度等和实际情况均无关联。</p>
+                <p>The sizes, positions, and angles of the celestial bodies on this webpage do not reflect actual conditions.
+                </p>
+            </span></div>
+    </div>
+    <div class="warp">
+        <div class="moon" id="play-button"></div>
+        <div class="desc">智者不入爱河</div>
+        <div id="container">
+            <!-- 播放按钮 -->
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
     <script>
-setTimeout(function(){
-$(".cover").fadeOut();
-},10000);
-const d = new Date(); 
-const len = d.getTime();
-const offset = d.getTimezoneOffset() * 60000;
-const utcTime = len + offset;
-const date = new Date(utcTime + 3600000 * 8);
-let hours = date.getHours();
-let starlog=0,redlog=0,yellowlog=0,planetlog='';
-        if(hours<8){
-            $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -63px');
+        const screenW = document.documentElement.clientWidth;
+        const screenH = document.documentElement.clientHeight;
+        let item = '';
+        const offsetX = $(".moon").offset().left;
+        const offsetY = $(".moon").offset().top;
+        setTimeout(function () {
+            $(".cover").fadeOut();
+            //$(".desc").fadeIn();
+            $("#play-button").fadeIn();
+        }, 5000);
+        let starlog = 0, redlog = 0, yellowlog = 0, planetlog = '';
+        // Real moon phase (CST) from a free API. moon.jpg holds 24 frames
+        // in lunar-age order (new -> full -> new), 3 rows x 8 cols.
+        // Frame = floor(ageDays / 29.53 * 24), clamped to 0-23.
+        // Row y: -63, -196, -323. Col x: -2 - 127 * col.
+        // Rotation stays random; brightness and rise/set times are not used.
+        (function () {
+            var moonEl = document.querySelector('.moon');
+            var rowY = [-63, -196, -323];
+            function setMoonFrame(ageDays) {
+                var frame = Math.floor(ageDays / 29.53 * 24);
+                if (frame < 0) frame = 0;
+                if (frame > 23) frame = 23;
+                var row = Math.floor(frame / 8);
+                var col = frame % 8;
+                moonEl.style.backgroundPosition = (-2 - 127 * col) + 'px ' + rowY[row] + 'px';
+            }
+            fetch('https://randomapi.dev/api/moon/phase?tz=Asia/Shanghai')
+                .then(function (r) { return r.json(); })
+                .then(function (body) {
+                    var age = body && body.data && body.data.ageDays;
+                    if (typeof age === 'number') setMoonFrame(age);
+                })
+                .catch(function () { /* API unreachable: leave the default moon frame. */ });
+        })();
+        const moonRoll = randomNum(1, 360);
+        $(".moon").css('transform', 'rotate(' + moonRoll + 'deg)');
+        const planet = randomNum(1, 10);
+        if (planet > 0 && planet < 8) {
+            var span = document.createElement('i');
+            document.body.appendChild(span);
+            $("i").addClass("planet");
+            var x = parseInt(Math.random() * screenW);
+            var y = parseInt(Math.random() * screenH);
+            if (x >= offsetX && x <= (offsetX + 128) && y >= offsetY && y <= (offsetY + 128)) {
+                x += 128;
+                y += 128;
+            }
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.backgroundImage = 'url(images/' + planet + '.jpg)';
+            span.style.zIndex = "0";
+            $(".planet").css('transform', 'rotate(' + moonRoll + 'deg)');
+            planetlog = '';
+            switch (planet) {
+                case 1: planetlog += 'Mercury'; break;
+                case 2: planetlog += 'Venus'; break;
+                case 3: planetlog += 'Mars'; break;
+                case 4: planetlog += 'Saturn'; break;
+                case 5: planetlog += 'Neptune'; break;
+                case 6: planetlog += 'Uranus'; break;
+                case 7: planetlog += 'Jupiter'; break;
+                default: break;
+            }
         }
-        else if(hours>7&&hours<16){
-            hours-=8;
-            $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -196px');
+        $(".planet").attr("title", planetlog);
+        $(".planet").click(function () {
+            $(".desc").hide();
+            $(".cover").show();
+            setTimeout(function () {
+                $(".cover").fadeOut();
+            }, 5000);
+            //$("span").not(".default").fadeOut();
+            $(".moon").css("background", "none");
+            $(".moon").css('transform', 'rotate(0deg)');
+            $(".desc").css('margin', '0 auto');
+            $(".moon").html('<img src="images/' + planetlog + '.webp" alt="' + planetlog + '" width="100%" style="    filter: blur(2px);">');
+            $(".desc").html(planetlog);
+            $("i").fadeOut();
+            //$(".desc").fadeIn();
+        });
+        // 封装随机数方法
+        function randomDistance(max, min) {
+            var distance = Math.floor(Math.random() * (max - min + 1) + min);
+            return distance;
         }
-        else if(hours>15&&hours<24){
-             hours -=16;
-            $('.moon').css('background-position', (hours+1*(-2)-128*hours) + 'px -323px');
+//var resulti = '1st launch, launch time: 2025-09-25T10:00:01Z';
+        setInterval(function () {
+            // js随机生成流星
+            if ($("div").is(".meteor")) {
+                $(".meteor").remove();
+            }
+            var newStar = document.createElement("div");
+            newStar.className = "meteor";
+            var mx = randomDistance(500, -100);
+            var my = randomDistance(1300, 300);
+            newStar.style.top = mx + 'px';
+            newStar.style.left = my + 'px';
+            document.body.appendChild(newStar);
+        }, randomNum(10, 65) * 1000);
+        // Realistic Milky Way (summer midnight, ~30°N, per NASA / astronomy refs):
+        // - Steep band ~65° to the horizon, Cygnus (upper-right) -> Sagittarius
+        //   core (lower-left). Not the screen diagonal, not a random angle.
+        // - Density falls off EXPONENTIALLY from the centreline (not Gaussian):
+        //   most stars within a few degrees of the centreline, faint wide halo.
+        // - Brighter/denser toward the core (Sagittarius) end.
+        // - Great Rift: a dark dust lane splitting the band into two strands
+        //   along the middle stretch (Cygnus -> Sagittarius).
+        var MW_ANGLE = 65 * Math.PI / 180;
+        var mwDx = -Math.cos(MW_ANGLE);
+        var mwDy = Math.sin(MW_ANGLE);
+        var mwPx = Math.sin(MW_ANGLE);
+        var mwPy = Math.cos(MW_ANGLE);
+        var mwCx = screenW / 2;
+        var mwCy = screenH / 2;
+        var mwHalf = Math.min((screenW / 2) / Math.abs(mwDx), (screenH / 2) / Math.abs(mwDy));
+        var mwLen = mwHalf * 2;
+        var mwScale = Math.min(screenW, screenH) * 0.10;
+        var mwRift = mwScale * 0.6;
+        function galaxyPos() {
+            var t = Math.pow(Math.random(), 0.6);
+            var along = (t - 0.5) * mwLen;
+            var cx = mwCx + along * mwDx;
+            var cy = mwCy + along * mwDy;
+            var off = -Math.log(1 - Math.random()) * mwScale;
+            if (Math.random() < 0.5) off = -off;
+            if (t > 0.2 && t < 0.8 && Math.abs(off) < mwRift) {
+                return null;
+            }
+            var x = cx + off * mwPx;
+            var y = cy + off * mwPy;
+            if (x < 0 || x > screenW || y < 0 || y > screenH) return null;
+            return { x: x, y: y };
         }
-const screenW = document.documentElement.clientWidth;
-const screenH = document.documentElement.clientHeight;
-let item = '';
-const offsetX = $(".moon").offset().left;
-const offsetY = $(".moon").offset().top;
-const moonRoll = randomNum(1,360);
-$(".moon").css('transform','rotate('+moonRoll+'deg)');
-const planet = randomNum(1,10);
-if(planet>0&&planet<8){
-    var span = document.createElement('i');    
-    document.body.appendChild(span);
-    $("i").addClass("planet");
-    var x = parseInt(Math.random() * screenW);
-    var y = parseInt(Math.random() * screenH);
-    if(x>=offsetX&&x<=(offsetX+128)&&y>=offsetY&&y<=(offsetY+128)){
-       x+=128;
-       y+=128;
-    }
-    span.style.left = x + 'px';
-    span.style.top = y + 'px';
-    span.style.backgroundImage = 'url(images/'+planet+'.jpg)';
-    span.style.zIndex = "0";
-    $(".planet").css('transform','rotate('+moonRoll+'deg)');
-    planetlog ='';
-    switch(planet){
-        case 1:planetlog+='Mercury';break;
-        case 2:planetlog+='Venus';break;
-        case 3:planetlog+='Mars';break;
-        case 4:planetlog+='Saturn';break;
-        case 5:planetlog+='Neptune';break;
-        case 6:planetlog+='Uranus';break;
-        case 7:planetlog+='Jupiter';break;
-        default:break;
-    }
-}
-$(".planet").attr("title",planetlog);
-$(".planet").click(function(){
-$(".cover").show();
-setTimeout(function(){
-$(".cover").fadeOut();
-},5000);
-    $(".cover").show();
-    //$("span").not(".default").fadeOut();
-    $(".moon").css("background","none");
-    $(".moon").css('transform','rotate(0deg)');
-    $(".desc").css('margin','0 auto');
-    $(".moon").html('<img src="images/'+planetlog+'.webp" alt="'+planetlog+'" width="100%" style="    filter: blur(2px);">');
-    $(".desc").html(planetlog);
-    $("i").fadeOut();
-});
-for(var i=0; i<2048; i++){ 
-const starColorNum =  randomNum(1,100);
-const starOpacity =  randomNum(1,3);
-var so = '';
-if(starColorNum<2){
-    redlog++;
-    item = '-red';
-}
-else if(starColorNum>1&&starColorNum<5){
-    yellowlog++;
-    item = '-yellow';
-}
-else{
-    starlog++;
-    item = '';
-}
-switch(starOpacity){
-    case 2:so='30';break;
-    case 3:so='50';break;
-    default:break;
-}
-    var span = document.createElement('span');    
-    document.body.appendChild(span);
-    var x = parseInt(Math.random() * screenW);
-    var y = parseInt(Math.random() * screenH);
-    if(x>=offsetX&&x<=(offsetX+128)&&y>=offsetY&&y<=(offsetY+128)){
-        continue;
-    }
-    span.style.left = x + 'px';
-    span.style.top = y + 'px';
-    span.style.backgroundImage = 'url(star'+item+'.png)';
-    span.style.zIndex = "0";
-    var scale = Math.random() * 0.6;
-if(scale>0.56){
-    scale=Math.random() * 1.5;
-}
-else if(scale<0.56&&scale>0.1){
-    scale=0.3;
-}
-else{
-    scale=0.1;
-}
-    span.style.transform = 'scale('+ scale + ', ' + scale + ')';
-    var rate = Math.random() * 15;
-    span.style.animationDelay = rate + 's';
-    var interval = Math.random()*150;
-    span.style.animation = 'blink'+so+' '+interval+'s infinite';
-}
-function randomNum(minNum,maxNum){ 
-    switch(arguments.length){ 
-        case 1: 
-            return parseInt(Math.random()*minNum+1,10); 
-        break; 
-        case 2: 
-            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-        break; 
-            default: 
-                return 0; 
-            break; 
-    } 
-}
-$(".moon").one("dblclick",function(){
-    $(".planet").click();
-});
-//$('.planet').hover(function(){
-    //$(this).css('filter','blur(0px)');
-    //$(this).css('transform','scale(5) rotate('+moonRoll+'deg)');
-//});
-//$('.planet').mouseleave(function(){
-     //$(this).css('transform','scale(1) rotate('+moonRoll+'deg)');
-     //$(this).css('filter','blur(1px)');
-//});
-//$('.desc').html('screenW:'+screenW+'screenH:'+screenH);
-</script>
+        let totalStars = 1024;
+        if(window.innerWidth<=767)
+        totalStars = 400;
+        for (var i = 0; i < totalStars; i++) {
+            const starColorNum = randomNum(1, 100);
+            const starOpacity = randomNum(1, 3);
+            var so = '';
+            if (starColorNum < 2) {
+                redlog++;
+                item = '-red';
+            }
+            else if (starColorNum > 1 && starColorNum < 5) {
+                yellowlog++;
+                item = '-yellow';
+            }
+            else {
+                starlog++;
+                item = '';
+            }
+            switch (starOpacity) {
+                case 2: so = '30'; break;
+                case 3: so = '50'; break;
+                default: break;
+            }
+            var starPos;
+            if (Math.random() < 0.65) {
+                starPos = galaxyPos();
+                if (!starPos) continue;
+            } else {
+                starPos = { x: Math.random() * screenW, y: Math.random() * screenH };
+            }
+            var x = parseInt(starPos.x);
+            var y = parseInt(starPos.y);
+            if (x >= offsetX && x <= (offsetX + 128) && y >= offsetY && y <= (offsetY + 128)) {
+                continue;
+            }
+            var span = document.createElement('span');
+            document.body.appendChild(span);
+            span.style.left = x + 'px';
+            span.style.top = y + 'px';
+            span.style.backgroundImage = 'url(star' + item + '.png)';
+            span.style.zIndex = "0";
+            var scale = Math.random() * 0.6;
+            if (scale > 0.56) {
+                scale = Math.random() * 1.5;
+            }
+            else if (scale < 0.56 && scale > 0.1) {
+                scale = 0.3;
+            }
+            else {
+                scale = 0.1;
+            }
+            span.style.transform = 'scale(' + scale + ', ' + scale + ')';
+            var rate = Math.random() * 15;
+            span.style.animationDelay = rate + 's';
+            var interval = Math.random() * 150;
+            span.style.animation = 'blink' + so + ' ' + interval + 's infinite';
+        }
+
+        function randomNum(minNum, maxNum) {
+            switch (arguments.length) {
+                case 1:
+                    return parseInt(Math.random() * minNum + 1, 10);
+                    break;
+                case 2:
+                    return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+                    break;
+                default:
+                    return 0;
+                    break;
+            }
+        }
+        $(".moon").one("dblclick", function () {
+            $(".planet").click();
+        });
+        $(document).ready(function () {
+var resulti = '25th launch, launch time: 2026-08-16T11:07:35Z';
+            // 检查/cert目录下是否有文件
+            $.get('cert/cert.info')
+                .done(function (result) {
+                    if (result.trim() === 'available') {
+                        $(".desc").html(resulti + '<br/><img src="images/full.svg">');
+                    } else {
+                        $(".desc").html(resulti + '<br/><img src="images/empty.svg">');
+                    }
+                })
+                .fail(function () {
+                    $(".desc").html('Error loading file<br/><img src="images/empty.svg">');
+                });
+        });
+        // 获取音频元素
+
+        var audio = document.getElementById('bg-music');
+
+        // 初始状态为暂停
+        var isPlaying = false;
+
+
+        // 淡入淡出参数
+        var fadeDuration = 500; // 淡入淡出持续时间（毫秒）
+        var fadeInterval = 10; // 音量调整间隔（毫秒）
+        var volumeStep = fadeInterval / fadeDuration; // 每次调整的音量步长
+
+        // 切换图标和音频状态
+        function togglePlay() {
+            if (isPlaying) {
+                // 淡出音频
+                var fadeOutInterval = setInterval(function () {
+                    if (audio.volume > 0) {
+                        audio.volume = Math.max(audio.volume - volumeStep, 0); // 减少音量
+                    } else {
+                        audio.pause(); // 暂停音频
+                        clearInterval(fadeOutInterval); // 停止淡出
+                    }
+                }, fadeInterval);
+            } else {
+                audio.play(); // 播放音频
+                // 淡入音频
+                audio.volume = 0; // 初始音量为 0
+                var fadeInInterval = setInterval(function () {
+                    if (audio.volume < 1) {
+                        audio.volume = Math.min(audio.volume + volumeStep, 1); // 增加音量
+                    } else {
+                        clearInterval(fadeInInterval); // 停止淡入
+                    }
+                }, fadeInterval);
+            }
+            isPlaying = !isPlaying; // 切换状态
+        }
+        // 绑定点击事件
+        document.getElementById('play-button').addEventListener('click', togglePlay);
+        $(".egg").click(function () {
+            $("#play-button").click();
+        });
+        $(".egg").one("dblclick", function () {
+            $(".planet").click();
+        });
+        $('.moon').hover(function () {
+           // $(".desc").slideDown(1500);
+        });
+        //$('.planet').hover(function(){
+        //$(this).css('filter','blur(0px)');
+        //$(this).css('transform','scale(5) rotate('+moonRoll+'deg)');
+        //});
+        //$('.planet').mouseleave(function(){
+        //$(this).css('transform','scale(1) rotate('+moonRoll+'deg)');
+        //$(this).css('filter','blur(1px)');
+        //});
+        //$('.desc').html('screenW:'+screenW+'screenH:'+screenH);
+    </script>
+    <a class="help-btn" href="references.html" target="_blank" rel="noopener" aria-label="References"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.4 9a2.9 2.9 0 1 1 4.2 2.6c-.8.35-1.6.9-1.6 1.9v.4" stroke="#000" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.5" fill="#000"/></svg><span class="help-tip">References</span></a>
 </body>
+
 </html>
