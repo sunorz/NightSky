@@ -611,10 +611,9 @@
                     var x = lx * cosT - ly * sinT;
                     var y = lx * sinT + ly * cosT;
                     var z = R * Math.sin(t) * sinI;   // depth: >0 in front, <0 behind
-                    var dx = -A * Math.sin(t), dy = B * Math.cos(t);
-                    var tx = dx * cosT - dy * sinT;
-                    var ty = dx * sinT + dy * cosT;
-                    var ang = Math.atan2(ty, tx) * 180 / Math.PI;
+                    // Nadir-pointing like the real LRO: the antenna (-y) points
+                    // radially outward from the Moon, instruments (+y) toward it.
+                    var ang = Math.atan2(x, -y) * 180 / Math.PI;
                     ship.style.left = (c.x + x - 6) + 'px';
                     ship.style.top = (c.y + y - 4) + 'px';
                     ship.style.transform = 'rotate(' + ang + 'deg)';
