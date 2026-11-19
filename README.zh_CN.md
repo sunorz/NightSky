@@ -44,12 +44,5 @@
 - 星星闪烁动画时长随机
 - 修改了星星颜色出现的概率
 
-# 版权
-- moon.jpg NASA / Lunar Reconnaissance Orbiter (public domain)
-- 行星缩略图 NASA
-- 行星3D建模 Vito Technology Inc.
-- 基本代码 [是乃德也是Ned](https://zhuanlan.zhihu.com/p/506079249)
-- 修改代码 [Sunplace](https://blog.kkii.org)
-
 # OtherLanguage  
 [English](README.md)

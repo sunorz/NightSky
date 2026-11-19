@@ -41,12 +41,5 @@ The positions and sizes of the stars and planets, and the angle of the Moon on t
 - Randomized the length of the stars' blinking animation
 - Modified the probability of stars' colors appearing
   
-# Copyright
-- moon.jpg NASA / Lunar Reconnaissance Orbiter (public domain)
-- Planet thumbnails by NASA
-- Planet 3D model by Vito Technology Inc.
-- base code [是乃德也是Ned](https://zhuanlan.zhihu.com/p/506079249)
-- new and improved [Sunplace](https://blog.kkii.org)
-
 # 其他语言
 [简体中文](README.zh_CN.md)
